@@ -1,0 +1,57 @@
+from collections import deque
+
+# Check if a state is valid
+def is_valid(m, c):
+    if m < 0 or c < 0 or m > 3 or c > 3:
+        return False
+    if m > 0 and m < c:
+        return False
+    mr = 3 - m
+    cr = 3 - c
+    if mr > 0 and mr < cr:
+        return False
+    return True
+
+# BFS Solution
+def solve():
+    start = (3, 3, 'L')
+    goal = (0, 0, 'R')
+
+    queue = deque([(start, [start])])
+    visited = set()
+
+    while queue:
+        (m, c, boat), path = queue.popleft()
+
+        if (m, c, boat) == goal:
+            return path
+
+        if (m, c, boat) in visited:
+            continue
+
+        visited.add((m, c, boat))
+
+        moves = [(2,0), (0,2), (1,1), (1,0), (0,1)]
+
+        for dm, dc in moves:
+            if boat == 'L':
+                new_state = (m-dm, c-dc, 'R')
+            else:
+                new_state = (m+dm, c+dc, 'L')
+
+            nm, nc, nb = new_state
+
+            if is_valid(nm, nc):
+                queue.append((new_state, path + [new_state]))
+
+    return None
+
+# Main Program
+solution = solve()
+
+if solution:
+    print("Solution Found:\n")
+    for state in solution:
+        print(state)
+else:
+    print("No Solution Exists")
