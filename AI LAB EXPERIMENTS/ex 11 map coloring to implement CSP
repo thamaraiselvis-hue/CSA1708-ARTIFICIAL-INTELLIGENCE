@@ -1,0 +1,47 @@
+# Map Coloring using CSP (Backtracking)
+
+# Map of Australia
+graph = {
+    'WA': ['NT', 'SA'],
+    'NT': ['WA', 'SA', 'Q'],
+    'SA': ['WA', 'NT', 'Q', 'NSW', 'V'],
+    'Q': ['NT', 'SA', 'NSW'],
+    'NSW': ['Q', 'SA', 'V'],
+    'V': ['SA', 'NSW'],
+    'T': []
+}
+
+colors = ['Red', 'Green', 'Blue']
+
+solution = {}
+
+# Check if assigning color is safe
+def is_safe(region, color):
+    for neighbor in graph[region]:
+        if neighbor in solution and solution[neighbor] == color:
+            return False
+    return True
+
+# Backtracking function
+def solve():
+    if len(solution) == len(graph):
+        return True
+
+    for region in graph:
+        if region not in solution:
+            for color in colors:
+                if is_safe(region, color):
+                    solution[region] = color
+
+                    if solve():
+                        return True
+
+                    del solution[region]
+            return False
+
+if solve():
+    print("Map Coloring Solution:")
+    for region in solution:
+        print(region, "->", solution[region])
+else:
+    print("No Solution Exists")
