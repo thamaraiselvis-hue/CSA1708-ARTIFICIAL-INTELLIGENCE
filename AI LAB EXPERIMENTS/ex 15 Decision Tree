@@ -1,0 +1,49 @@
+# Decision Tree using ID3 Algorithm
+
+from math import log2
+
+# Training data
+data = [
+    ['Sunny', 'Hot', 'High', 'Weak', 'No'],
+    ['Sunny', 'Hot', 'High', 'Strong', 'No'],
+    ['Overcast', 'Hot', 'High', 'Weak', 'Yes'],
+    ['Rain', 'Mild', 'High', 'Weak', 'Yes'],
+    ['Rain', 'Cool', 'Normal', 'Weak', 'Yes'],
+    ['Rain', 'Cool', 'Normal', 'Strong', 'No'],
+    ['Overcast', 'Cool', 'Normal', 'Strong', 'Yes'],
+    ['Sunny', 'Mild', 'High', 'Weak', 'No'],
+    ['Sunny', 'Cool', 'Normal', 'Weak', 'Yes'],
+    ['Rain', 'Mild', 'Normal', 'Weak', 'Yes']
+]
+
+attributes = ['Outlook', 'Temperature', 'Humidity', 'Wind']
+
+# Calculate entropy
+def entropy(rows):
+    yes = sum(1 for r in rows if r[-1] == 'Yes')
+    no = len(rows) - yes
+    if yes == 0 or no == 0:
+        return 0
+    p1 = yes / len(rows)
+    p2 = no / len(rows)
+    return -p1 * log2(p1) - p2 * log2(p2)
+
+# Information gain
+def info_gain(rows, col):
+    total = entropy(rows)
+    values = set(r[col] for r in rows)
+    rem = 0
+    for v in values:
+        subset = [r for r in rows if r[col] == v]
+        rem += (len(subset) / len(rows)) * entropy(subset)
+    return total - rem
+
+# Find best attribute
+gains = [info_gain(data, i) for i in range(len(attributes))]
+best = gains.index(max(gains))
+
+print("Information Gain:")
+for i in range(len(attributes)):
+    print(attributes[i], ":", round(gains[i], 3))
+
+print("\nBest Attribute for Root Node:", attributes[best])
