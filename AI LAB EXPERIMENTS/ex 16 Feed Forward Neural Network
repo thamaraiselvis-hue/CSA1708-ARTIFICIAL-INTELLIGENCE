@@ -1,0 +1,42 @@
+# Feed Forward Neural Network
+
+import math
+
+# Sigmoid activation function
+def sigmoid(x):
+    return 1 / (1 + math.exp(-x))
+
+# Input values
+x1 = 1
+x2 = 0
+
+# Weights and biases
+w1 = 0.5
+w2 = 0.5
+bias = -0.2
+
+# Hidden layer calculation
+hidden_input = (x1 * w1) + (x2 * w2) + bias
+hidden_output = sigmoid(hidden_input)
+
+# Output layer weights
+w3 = 1.0
+w4 = 1.0
+output_bias = -0.5
+
+# Output calculation
+output_input = (hidden_output * w3) + (hidden_output * w4) + output_bias
+output = sigmoid(output_input)
+
+# Display results
+print("Feed Forward Neural Network")
+print("----------------------------")
+print("Input 1:", x1)
+print("Input 2:", x2)
+print("Hidden Layer Output:", round(hidden_output, 4))
+print("Final Output:", round(output, 4))
+
+if output >= 0.5:
+    print("Predicted Class: 1")
+else:
+    print("Predicted Class: 0")
