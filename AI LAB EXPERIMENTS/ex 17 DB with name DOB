@@ -1,0 +1,15 @@
+import sqlite3
+# Create database
+conn = sqlite3.connect("dob.db")
+cursor = conn.cursor()
+# Create table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS student(
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    age INTEGER
+)
+""")
+print("Database 'dob.db' created successfully.")
+conn.commit()
+conn.close()
